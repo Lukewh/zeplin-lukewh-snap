@@ -1,14 +1,29 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, session } = require("electron");
 
 let mainWindow;
+
+const loadPlaceholder = () => {
+  mainWindow.loadURL(`file://${__dirname}/index.html`).then(() => {
+    mainWindow.webContents.session.setPermissionRequestHandler((webContents, permission, callback, details) => {
+      console.log(webContents, permission, callback, details);
+    });
+  }).catch((e) => { console.error(e); });
+};
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     height: 768,
     width: 1024,
-    icon: `${__dirname}/Zeplin.svg`
+    icon: `${__dirname}/Zeplin.svg`,
+    webPreferences: {
+      webviewTag: true
+    }
   });
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
+
+  mainWindow.removeMenu();
+
+  loadPlaceholder();
+  
   mainWindow.on("closed", () => {
     mainWindow = null;
   });

@@ -6,26 +6,50 @@
       height: 100%;
       margin: 0;
       padding: 0;
+    }
+    .loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      opacity: 1;
       font-family: Roboto, Helvetica, sans-serif;
       color: rgb(85, 77, 86);
       font-size: 24px;
       font-weight: 300;
-    }
-    body {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      transition: opacity .5s ease-out;
+      pointer-events: none;
+    }
+    #zeplin {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
     }
   </style>
+  <script>
+      onload = () => {
+        const webview = document.querySelector("webview");
+        webview.addEventListener("did-finish-load", (e) => {
+          document.querySelector(".loader").style.opacity = 0;
+          webview.focus();
+        });
+      }
+    </script>
   <body>
+    <div class="loader">
       <img src="Zeplin.svg" width="150" height="120" />
       <span style="margin-top: 24px;"1>
         Loading...
       </span>
-
-    <script>
-      window.location.href = "https://app.zeplin.io";
-    </script>
+    </div>
+    <webview id="zeplin" src="https://app.zeplin.io"></webview>
   </body>
 </html>
